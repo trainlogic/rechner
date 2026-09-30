@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lauf-Rechner: Zielzeit und Trainingstempo berechnen (Pace) | TrainLogic</title>
+<meta name="description" content="Pace-Rechner fürs Laufen: Aus einer Bestzeit deine Zielzeit für 5 km, 10 km, Halbmarathon und Marathon und die richtigen Trainingstempi nach Daniels – kostenlos.">
+<!-- Eingebettet auf fitnessdoneright.de unter Tools; das ist das Original fuer Suchmaschinen. -->
+<link rel="canonical" href="https://www.fitnessdoneright.de/lauf-rechner">
+<link rel="stylesheet" href="../css/nutrition.css?v=77e2d8c0">
+<link rel="stylesheet" href="../gemeinsam.css?v=3c61e44a">
+<script>
+  if (/[?&]eingebettet\b/.test(location.search)) document.documentElement.classList.add("eingebettet");
+</script>
+<style>
+  .lauf-strecken{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+  .lauf-zeile{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:7px 0;border-bottom:1px solid #eef2f7;font-size:15px}
+  .lauf-zeile:last-of-type{border-bottom:0}
+  .lauf-zeile span{min-width:0}
+  .lauf-zeile small{display:block;font-size:12px;color:rgba(4,44,76,.6)}
+  .lauf-zeile em{font-style:normal;font-size:11px;color:#f26a2c;font-weight:700;margin-left:4px}
+  .lauf-zeile b{white-space:nowrap;font-variant-numeric:tabular-nums}
+</style>
+</head>
+<body>
+<main class="seite">
+  <h1>Lauf-Rechner: Zielzeit und Tempo</h1>
+  <p class="unter">Eine Bestzeit eintragen und sehen, was du auf 5 km bis Marathon laufen kannst — und in welchem Tempo du dafür trainierst.</p>
+
+  <div id="rechner" class="flaeche"></div>
+
+  <div class="app">
+    <b>In der TrainLogic-App wird daraus dein Laufplan</b>
+    Die Tempi hier sind dieselben, mit denen die App trainiert:
+    <ul>
+      <li><span>Ein Plan über acht Wochen:</span> Du gibst deine Testzeit und dein Ziel ein, die App plant jede Einheit mit dem passenden Tempo — von locker bis Intervall.</li>
+      <li><span>Alles gespeichert:</span> Testzeit, Einheiten und Ergebnisse bleiben in der App, du siehst, wie du schneller wirst.</li>
+      <li><span>Mit Kalorien und Puls:</span> Jede Einheit bekommt ihren Kalorienverbrauch, mit Uhr oder Brustgurt aus deinem Puls.</li>
+    </ul>
+    <div class="links">
+      <a href="https://apps.apple.com/app/id6801099302" target="_blank" rel="noopener">App Store</a>
+      <a href="https://play.google.com/store/apps/details?id=com.benja.trainlogic" target="_blank" rel="noopener">Google Play</a>
+    </div>
+  </div>
+
+  <section class="faq">
+    <h2>Fragen zum Lauf-Rechner</h2>
+    <details><summary>Wie funktioniert der Lauf-Rechner?</summary><p>Du trägst eine Strecke und deine Zeit ein, am besten aus einem Wettkampf oder einem Test, bei dem du alles gegeben hast. Daraus berechnet der Rechner deinen Formwert, deine möglichen Zeiten auf 5 km bis Marathon und das Tempo für jede Trainingsart.</p></details>
+    <details><summary>Was ist der VDOT?</summary><p>Der VDOT ist ein Formwert, den der Lauftrainer Jack Daniels entwickelt hat. Er beschreibt, wie viel Sauerstoff du beim Laufen effektiv nutzt, und wird aus einer einzigen Wettkampfzeit berechnet. Je höher der Wert, desto schneller läufst du. Aus ihm leiten sich die Trainingstempi ab.</p></details>
+    <details><summary>Welche Zeit soll ich eingeben?</summary><p>Eine aktuelle Zeit, bei der du wirklich am Limit warst, auf flacher Strecke. Ideal ist ein 5-km-Lauf. Die Formeln gelten für Läufe zwischen 3 und 120 Minuten – ein gemütlicher Lauf oder eine alte Bestzeit von vor Jahren verfälscht das Ergebnis.</p></details>
+    <details><summary>Wie genau ist die Zielzeit-Prognose?</summary><p>Die Zielzeiten rechnen mit der Formel von Peter Riegel und stimmen gut, wenn du für die Strecke auch trainiert hast. Für Halbmarathon und Marathon braucht es lange Läufe – wer nur kurze Strecken läuft, bekommt eine zu optimistische Prognose.</p></details>
+    <details><summary>In welchem Tempo soll ich trainieren?</summary><p>Die meiste Zeit locker: Das lockere Tempo baut die Grundlage auf, und hier machen viele Läufer den Fehler, zu schnell zu laufen. Dazu kommen wenige harte Einheiten: Schwellenläufe über 20 bis 30 Minuten, Intervalle über 3 bis 5 Minuten und kurze schnelle Wiederholungen. Der Rechner zeigt jedes Tempo als Spanne, weil es auf die Sekunde nicht ankommt.</p></details>
+    <details><summary>Hilft Laufen beim Abnehmen?</summary><p>Laufen verbraucht viel Energie: Bei 80 kg kosten 30 Minuten mit 10 km/h rund 390 kcal. Wie viel es bei dir ist, zeigt der Kalorienverbrauch-Rechner, deinen ganzen Tagesbedarf der Kalorienrechner. Abgenommen wird trotzdem vor allem über das Essen.</p></details>
+    <details><summary>Was bringt mir die TrainLogic-App?</summary><p>Die App baut dir aus deiner Testzeit einen Laufplan über acht Wochen und gibt jeder Einheit das passende Tempo – dieselben Tempi wie hier. Testzeit, Einheiten und Ergebnisse bleiben gespeichert, und jede Einheit bekommt ihren Kalorienverbrauch. Die App lädst du kostenlos für iPhone und Android.</p></details>
+    <details><summary>Kostet der Rechner etwas?</summary><p>Nein. Er ist kostenlos und braucht keine Anmeldung. Deine Eingaben bleiben in deinem Browser, wir speichern nichts auf einem Server.</p></details>
+  </section>
+</main>
+<script src="../js/plan-vdot.js?v=ef81c39a"></script>
+<script src="lauf.js?v=a06b34d7"></script>
+</body>
+</html>
