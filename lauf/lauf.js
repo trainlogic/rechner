@@ -25,8 +25,9 @@
     { wert: "3000", text: "3 km", m: 3000 },
     { wert: "5000", text: "5 km", m: 5000 },
     { wert: "10000", text: "10 km", m: 10000 },
-    { wert: "21097.5", text: "Halbmarathon", m: 21097.5 },
-    { wert: "42195", text: "Marathon", m: 42195 }
+    // Kurz, damit drei Knoepfe je Zeile auch bei 320 px nebeneinander passen.
+    { wert: "21097.5", text: "21 km", m: 21097.5 },
+    { wert: "42195", text: "42 km", m: 42195 }
   ];
   const PROGNOSE = [
     { text: "5 km", m: 5000 }, { text: "10 km", m: 10000 },
@@ -43,21 +44,29 @@
   let z = (function () {
     let alt = {};
     try { alt = JSON.parse(localStorage.getItem(SPEICHER) || "{}") || {}; } catch (err) { alt = {}; }
-    return Object.assign({ strecke: "5000", zeit: "" }, alt);
+    const z0 = Object.assign({ strecke: "5000", std: "", min: "", sek: "" }, alt);
+    // Bis 30.09.2026 stand die Zeit als ein Text "25:30" im Speicher.
+    if (z0.zeit && !z0.min && !z0.std) {
+      const t = String(z0.zeit).split(":").map((x) => x.trim());
+      if (t.length === 3) { z0.std = t[0]; z0.min = t[1]; z0.sek = t[2]; }
+      else if (t.length === 2) { z0.min = t[0]; z0.sek = t[1]; }
+      else z0.min = t[0];
+    }
+    delete z0.zeit;
+    return z0;
   })();
   const merken = () => { try { localStorage.setItem(SPEICHER, JSON.stringify(z)); } catch (err) { /* egal */ } };
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
-  /* "25:30" -> mm:ss, "1:45:30" -> h:mm:ss, "25" -> Minuten. Komma wie Punkt. */
-  function sekundenAus(text) {
-    const t = String(text).trim().replace(",", ".");
-    if (!t) return 0;
-    const teile = t.split(":").map(Number);
-    if (teile.some((n) => !isFinite(n) || n < 0)) return 0;
-    if (teile.length === 1) return teile[0] * 60;
-    if (teile.length === 2) return teile[0] * 60 + teile[1];
-    if (teile.length === 3) return teile[0] * 3600 + teile[1] * 60 + teile[2];
-    return 0;
+  /* DREI FELDER STATT "25:30": auf dem Handy holt inputmode die
+     Zifferntastatur, und die hat keinen Doppelpunkt (Benjamin, 30.09.2026 —
+     die Zeit liess sich am iPhone nicht eintippen). Minuten und Sekunden
+     duerfen ueberlaufen ("90 min" ist erlaubt), Komma zaehlt wie Punkt. */
+  const zahl = (v) => { const n = Number(String(v).trim().replace(",", ".")); return isFinite(n) && n >= 0 ? n : NaN; };
+  function sekundenAus(std, min, sek) {
+    const teile = [std, min, sek].map((v) => (String(v).trim() === "" ? 0 : zahl(v)));
+    if (teile.some((n) => isNaN(n))) return 0;
+    return teile[0] * 3600 + teile[1] * 60 + teile[2];
   }
 
   function zeitText(sek) {
@@ -74,8 +83,8 @@
 
   function rechnen() {
     const s = STRECKEN.find((x) => x.wert === z.strecke);
-    const sek = sekundenAus(z.zeit);
-    if (!s || !(sek > 0)) return { fehlt: "Trag deine Zeit ein, zum Beispiel 25:30 für 25 Minuten 30 Sekunden oder 1:52:00 für einen Halbmarathon." };
+    const sek = sekundenAus(z.std, z.min, z.sek);
+    if (!s || !(sek > 0)) return { fehlt: "Trag deine Zeit ein, zum Beispiel 25 Minuten und 30 Sekunden — oder 1 Stunde und 52 Minuten für 21 km." };
     const wert = V.vdot(s.m, sek);
     if (!(wert > 0)) {
       return { fehlt: `Die Formeln gelten für Läufe zwischen ${V.T_MIN_MINUTEN} und ${V.T_MAX_MINUTEN} Minuten. Nimm eine Zeit aus diesem Bereich — ein 5-km-Lauf ist ideal.` };
@@ -87,6 +96,13 @@
     };
   }
 
+  // numeric statt decimal: Zeitangaben brauchen kein Komma, und die reine
+  // Zifferntastatur ist auf dem iPhone groesser.
+  function zeitFeld(name, text, beispiel) {
+    return `<div class="profile-field"><label for="lf-${name}">${text}</label>` +
+      `<input id="lf-${name}" type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="off" placeholder="${beispiel}" data-feld="${name}" value="${esc(z[name])}"></div>`;
+  }
+
   function formular() {
     const wahl = `<div class="nut-choice lauf-strecken">` + STRECKEN.map((s) =>
       `<button type="button" data-feld="strecke" data-wert="${s.wert}" aria-pressed="${z.strecke === s.wert}">${esc(s.text)}</button>`).join("") + `</div>`;
@@ -95,9 +111,9 @@
         <div class="nut-card-title">Deine Bestzeit</div>
         <div class="nut-feld-titel" style="margin-bottom:6px">Strecke</div>
         ${wahl}
-        <div class="nut-row" style="margin-top:10px">
-          <div class="profile-field"><label for="lf-zeit">Zeit (mm:ss oder h:mm:ss)</label>
-          <input id="lf-zeit" type="text" inputmode="decimal" autocomplete="off" placeholder="25:30" data-feld="zeit" value="${esc(z.zeit)}"></div>
+        <div class="nut-feld-titel" style="margin:12px 0 6px">Deine Zeit</div>
+        <div class="lauf-zeit">
+          ${zeitFeld("std", "Std.", "0")}${zeitFeld("min", "Min.", "25")}${zeitFeld("sek", "Sek.", "30")}
         </div>
         <div class="nut-hinweis">Am besten ein Lauf der letzten Wochen, bei dem du alles gegeben hast — ein Wettkampf oder ein Test auf flacher Strecke.</div>
       </div>
