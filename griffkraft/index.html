@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Griffkraft-Rechner: Dead Hang und Farmers Carry | TrainLogic</title>
+<meta name="description" content="Griffkraft selbst testen: Dead-Hang-Zeit oder Farmers Carry eintragen und sehen, welches Level du für dein Alter erreichst.">
+<!-- Eingebettet im Blogartikel "Was die Griffkraft mit Altern zu tun hat".
+     Solange der Artikel nicht live ist, steht keine canonical-Adresse hier;
+     noindex, damit die nackte Rechnerseite nicht statt des Artikels rankt. -->
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="../css/nutrition.css?v=77e2d8c0">
+<link rel="stylesheet" href="../gemeinsam.css?v=3c61e44a">
+<script>
+  if (/[?&]eingebettet\b/.test(location.search)) document.documentElement.classList.add("eingebettet");
+</script>
+<style>
+  /* Zwei Knoepfe/Felder je Zeile; nutrition.css gibt jedem Knopf
+     min-width:90px, im Raster zaehlt aber die Spalte (vgl. Lauf-Rechner). */
+  .gr-wahl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+  .gr-wahl button{min-width:0;padding-left:4px;padding-right:4px}
+  .gr-zwei{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;align-items:end}
+  .gr-zwei input{text-align:center}
+  .gr-ausfuehrung{margin:0;min-height:62px}
+  .gr-von{font-size:.45em;font-weight:700;color:rgba(4,44,76,.55)}
+  .gr-balken{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;margin:12px 0 8px}
+  .gr-balken i{display:block;height:10px;border-radius:3px;background:#e3e9f0}
+  .gr-balken i.an{background:#f9803c}
+  .gr-zeile{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:7px 0;border-bottom:1px solid #eef2f7;font-size:15px}
+  .gr-zeile span{min-width:0}
+  .gr-zeile b{white-space:nowrap;font-variant-numeric:tabular-nums}
+</style>
+</head>
+<body>
+<main class="seite">
+  <h1>Griffkraft-Rechner</h1>
+  <p class="unter">Dead Hang oder Farmers Carry eintragen und sehen, wo dein Griff für dein Alter steht.</p>
+
+  <div id="rechner" class="flaeche"></div>
+</main>
+<script src="griffkraft.js?v=7fd147e7"></script>
+</body>
+</html>
