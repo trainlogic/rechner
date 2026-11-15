@@ -34,11 +34,32 @@
   const MOVEMENT_DATA = {
     burpees: { kcalPerRep: 1.15, type: "reps" },
     airsquats: { kcalPerRep: 0.32, type: "reps" },
+    jumpsquats: { kcalPerRep: 0.45, type: "reps" },
     pushups: { kcalPerRep: 0.42, type: "reps" },
     handreleasepushups: { kcalPerRep: 0.45, type: "reps" },
     situps: { kcalPerRep: 0.22, type: "reps" },
     vups: { kcalPerRep: 0.3, type: "reps" },
     lunges: { kcalPerRep: 0.34, type: "reps" },
+    /* Sprung-Ausfallschritte (05.10.2026: fehlten, die Zeile brachte 0 kcal). */
+    jumpinglunges: { kcalPerRep: 0.45, type: "reps" },
+    /* Weitere Luecken aus dem Generator-Katalog (05.10.2026, alle Namen
+       durchgeprueft): Werte an verwandten Uebungen ausgerichtet. */
+    mountainclimbers: { kcalPerRep: 0.15, type: "reps" },
+    luraises: { kcalPerRep: 0.2, type: "reps" },
+    /* Wadenheben, auch einbeinig (Box-WOD "Single Leg Calf Raise", offen seit
+       29.09., 07.10.2026): kleine Muskelmasse, kurzer Weg — unter Lu Raises. */
+    standingcalfraises: { kcalPerRep: 0.15, type: "reps" },
+    /* Neu im Generator-Vorrat (08.10.2026), bisher ohne eigene Zeile. */
+    dips: { kcalPerRep: 0.5, type: "reps" },                  // wie Ring Dips
+    dumbbellbicepcurls: { kcalPerRep: 0.22, type: "reps" },
+    hangingkneeraises: { kcalPerRep: 0.42, type: "reps" },    // unter Knees to Elbows 0,5
+    hollowhold: { kcalPerMinute: 3.5, type: "time" },         // wie Plank
+    handstandhold: { kcalPerMinute: 4.5, type: "time" },
+    sumodeadlifts: { kcalPerRep: 0.55, type: "reps" },        // wie Deadlifts
+    bandeddips: { kcalPerRep: 0.4, type: "reps" },
+    groundtooverhead: { kcalPerRep: 0.95, type: "reps" },
+    dumbbellhangmusclesnatches: { kcalPerRep: 0.6, type: "reps" },
+    sandbaglunges: { kcalPerRep: 0.5, type: "reps" },
     wallballshots: { kcalPerRep: 0.65, type: "reps" },
     kettlebellswings: { kcalPerRep: 0.55, type: "reps" },
     singlearmkettlebellswings: { kcalPerRep: 0.55, type: "reps" },   // 22.09.2026, wie beidarmig
@@ -120,6 +141,8 @@
     sandbagovershoulder: { kcalPerRep: 0.95, type: "reps" },
 
     hollowrocks: { kcalPerRep: 0.22, type: "reps" },
+    candlesticks: { kcalPerRep: 0.35, type: "reps" },          // 10.10.2026, Rolle in den Schulterstand und hoch
+    bandedlateralwalks: { kcalPerRep: 0.12, type: "reps" },    // 10.10.2026, je Schritt, Aktivierung
     archrocks: { kcalPerRep: 0.22, type: "reps" },
     pullovers: { kcalPerRep: 0.72, type: "reps" },
 
@@ -127,14 +150,24 @@
     wallfacingstricthandstandpushups: { kcalPerRep: 1.0, type: "reps" },
     wallfacingkippinghandstandpushups: { kcalPerRep: 0.88, type: "reps" },
     seateddumbbellstrictpress: { kcalPerRep: 0.55, type: "reps" },
+    dumbbellarnoldpress: { kcalPerRep: 0.55, type: "reps" },   // 09.10.2026: wie der sitzende Strict Press
     pikepushups: { kcalPerRep: 0.48, type: "reps" },
 
     barmuscleups: { kcalPerRep: 1.6, type: "reps" },
     ringmuscleups: { kcalPerRep: 1.75, type: "reps" },
     ropeclimbs: { kcalPerRep: 5.0, type: "reps" },
     leglessropeclimbs: { kcalPerRep: 6.0, type: "reps" },
+    // Doppelzug: laenger an gebeugten Armen, etwas mehr als der Legless Climb
+    doublepullstrictleglessropeclimbs: { kcalPerRep: 6.5, type: "reps" },
 
     handstandwalk: { kcalPerMeter: 1.0, type: "distance" },
+    /* Varianten (06.10.2026): ohne Eintrag zaehlten sie 0 kcal. Rueckwaerts
+       und mit Pirouette etwas teurer als flach, die Rampe (Auf- und Abstieg
+       im Handstand) am teuersten. */
+    reversehandstandwalk: { kcalPerMeter: 1.1, type: "distance" },
+    reversehandstandwalks: { kcalPerMeter: 1.1, type: "distance" },
+    handstandwalkwithpirouette: { kcalPerMeter: 1.1, type: "distance" },
+    handstandwalkoverramp: { kcalPerMeter: 1.4, type: "distance" },
 
     benchpress: { kcalPerRep: 0.52, type: "reps" },
     shoulderpress: { kcalPerRep: 0.5, type: "reps" },
@@ -228,16 +261,19 @@
     kettlebellrows: { kcalPerRep: 0.38, type: "reps" },
     invertedrows: { kcalPerRep: 0.32, type: "reps" },         // = Ring Rows
     ringpullups: { kcalPerRep: 0.58, type: "reps" },          // Pull Ups 0,55, instabiler
-    /* Bis 28.08.2026 "Parallette Dips" mit 0,4 — begruendet damit, dass am
-       Boden ein Teil des Gewichts auf den Fersen bleibt. Als Matador Dip
-       haengt der ganze Koerper: naeher an den Ring Dips (0,5), nur
-       stabiler gefuehrt. Der alte Schluessel bleibt stehen, sonst faellt
-       jedes Altlog auf den Dauer-Rueckfall zurueck. */
-    matadordips: { kcalPerRep: 0.45, type: "reps" },
-    parallettedips: { kcalPerRep: 0.45, type: "reps" },
+    /* Matador Dips, wie Benjamins Film sie zeigt (06.10.2026 nachgesehen):
+       Stangen am Rig auf Hueftnaehe, die Fuesse stehen hinten auf dem
+       Vorfuss und tragen mit. Der Kommentar vom 28.08. ("der ganze Koerper
+       haengt", 0,45) passte nicht zum Film — zurueck auf 0,4, unter den
+       Barren- und Ring-Dips (0,5). Der alte Schluessel bleibt stehen, sonst
+       faellt jedes Altlog auf den Dauer-Rueckfall zurueck. */
+    matadordips: { kcalPerRep: 0.4, type: "reps" },
+    parallettedips: { kcalPerRep: 0.4, type: "reps" },
     parallettehandstandpushups: { kcalPerRep: 0.85, type: "reps" },
     hanginglegraises: { kcalPerRep: 0.45, type: "reps" },     // zwischen Sit-Ups und T2B
     hammercurls: { kcalPerRep: 0.2, type: "reps" },           // kleine Muskelmasse
+    skullcrushers: { kcalPerRep: 0.2, type: "reps" },         // wie Hammer Curls (21.10.2026)
+    weightedsitups: { kcalPerRep: 0.28, type: "reps" },       // zwischen Sit-Ups 0,22 und GHD 0,32
     bulgariansplitsquats: { kcalPerRep: 0.45, type: "reps" }, // Lunges 0,34, einbeinig mit Last
 
     /* --- Der ZEIT-Typ (28.08.2026) --------------------------------------
@@ -266,6 +302,9 @@
     farmershold: { kcalPerMinute: 6.0, type: "time" },
     platepinchhold: { kcalPerMinute: 3.5, type: "time" },
     deadhang: { kcalPerMinute: 3.0, type: "time" },
+    // Haltezeilen aus dem Box-Programm (08.10.2026): "30 sec Plank", "30 sec Wall Sit"
+    plank: { kcalPerMinute: 3.5, type: "time" },
+    wallsit: { kcalPerMinute: 4.0, type: "time" },
 
     // High-demand compound movements
     turkishgetups: { kcalPerRep: 1.0, type: "reps" },
@@ -429,7 +468,11 @@
     }
   }
 
+  /* Merkt sich, ob eine Schaetzung den bodyFactor benutzt hat — fuer
+     `kcalErnaehrung` (siehe mitErnaehrungsWert). */
+  let bodyFactorBenutzt = false;
   function getBodyFactor(profile) {
+    bodyFactorBenutzt = true;
     const weightKg = Number(profile?.weightKg || 0);
     const gender   = profile?.gender || "male";
     const age      = Number(profile?.age || 30);
@@ -576,6 +619,73 @@
 
     const text = getWorkoutText(log);
 
+    /* On/Off und Pflicht + Max (05.10.2026). */
+    {
+      const oo = text.match(/^(\d+)\s+(?:Rounds|Runden):\s+(\d+):00\s+(?:On|Arbeit)\s+\/\s+(\d+):00\s+(?:Off|Pause)$/im);
+      if (oo) return Number(oo[1]) * Number(oo[2]) + (Number(oo[1]) - 1) * Number(oo[3]);
+      const pm = text.match(/^(?:On a (\d+):00 Clock|(\d+):00 auf der Uhr: erst die Pflicht)/im);
+      if (pm) return Number(pm[1] || pm[2]);
+    }
+
+    /* Ganze Runde im Takt (04.10.2026): "Every 3:00 × 5 Rounds" = 15 min. */
+    {
+      /* auch unter einer Minute: "Every 0:30 × 24 Rounds" = 12 min. */
+      const takt = text.match(/^Every\s+(\d+):(\d{2})\s+×\s+(\d+)\s+Rounds$/im);
+      if (takt) return ((Number(takt[1]) * 60 + Number(takt[2])) * Number(takt[3])) / 60;
+      /* Deutsch (05.10.2026): "Alle 30s × 24 Runden", "Alle 3 min × 5 Runden". */
+      const alle = text.match(/^Alle\s+(\d+)\s*(s|min)\s+×\s+(\d+)\s+Runden$/im);
+      if (alle) return (Number(alle[1]) * (alle[2] === "min" ? 60 : 1) * Number(alle[3])) / 60;
+    }
+
+    /* Tabata-Workout (04.10.2026): je Uebung 8 x 20 s + 7 x 10 s = 3:50,
+       dazwischen 1:00 Pause. Der Gedankenstrich ist hier schon normalisiert
+       (normalizeTextDashes), daher [–-]. */
+    if (/^Tabata\s+[–-]\s+8\s+×\s+0:20/im.test(text)) {
+      const n = (text.match(/^•\s+\S/gm) || []).length;
+      if (n > 0) return Math.round(((n * 230 + (n - 1) * 60) / 60) * 10) / 10;
+    }
+
+    /* Max-Reps-Runden (Log-Pruefung 05.10.2026: 0 min, 0 kcal): je Runde
+       jede Uebung ein Satz am Stueck (~1:00 inkl. Wechsel), danach 2:00
+       Pause; nach der letzten Runde keine. Neuer und alter Kopf. */
+    {
+      const mr = text.match(/^(\d+)\s+(?:Runden: sammle so viele Wiederholungen wie möglich|Rounds, Max Reps)\b.*Pause|^(\d+)\s+Rounds, Max Reps.*Rest/im);
+      if (mr) {
+        const runden = Number(mr[1] || mr[2]);
+        const n = Math.max(1, (text.match(/^•\s+\S/gm) || []).length);
+        return runden * n * 1 + (runden - 1) * 2;
+      }
+    }
+
+    /* Stationen im Minutentakt (05.10.2026): je Station 1:00, nach jeder
+       Runde 1:00 Pause, nach der letzten keine. */
+    {
+      const st = text.match(/^(\d+)\s+Runden: je Station 1:00 so viele Wiederholungen wie möglich/im);
+      if (st) {
+        const runden = Number(st[1]);
+        const n = Math.max(1, (text.match(/^•\s+\S/gm) || []).length);
+        return runden * (n + 1) - 1;
+      }
+    }
+    /* Last steigern (05.10.2026): "alle 1:30 × 8 Runden". */
+    {
+      const ll = text.match(/^Last steigern \(For Load\): alle (\d+):(\d{2}) × (\d+) Runden$/im);
+      if (ll) return ((Number(ll[1]) * 60 + Number(ll[2])) * Number(ll[3])) / 60;
+    }
+
+    /* AMRAP-Teile (Zweiteiler / AMRAP-Wechsel, 04.10.2026): alle Teile und
+       Pausen, mal die Durchgaenge, ohne die letzte Pause. Sonst stand die
+       Laenge EINES AMRAPs als Dauer auf den Kalender-Karten (5 statt 15 min). */
+    if (log.resultType === "rounds_reps" && /^TEIL\s+[A-Z]\s*[–-]\s*AMRAP\s+\d+/im.test(text)) {
+      const summe = (re) => [...text.matchAll(re)].reduce((a, m) => a + Number(m[1]), 0);
+      const amraps = summe(/^TEIL\s+[A-Z]\s*[–-]\s*AMRAP\s+(\d+)\s*min/gim);
+      const pausenListe = [...text.matchAll(/^Pause\s+(\d+)\s*min$/gim)].map((m) => Number(m[1]));
+      const durchgaenge = Number((text.match(/^(\d+)\s+Durchgänge\b/im) || [])[1]) || 1;
+      const pausen = pausenListe.reduce((a, b) => a + b, 0);
+      const letzte = durchgaenge > 1 && pausenListe.length ? pausenListe[pausenListe.length - 1] : 0;
+      return durchgaenge * (amraps + pausen) - letzte;
+    }
+
     if (log.resultType === "rounds_reps" || log.resultType === "emom") {
       let match = text.match(/AMRAP\s+(\d+)\s*min/i);
       if (match) return Number(match[1]);
@@ -650,13 +760,30 @@
     return Number.isFinite(num) ? num : null;
   }
 
+  /* Zweiteiler (03.10.2026): "TEIL A – 4 Rounds For Time (TC 8 min)" setzt die
+     Rundenzahl fuer die Zeilen darunter, bis der naechste Teil kommt. */
+  function zweiteilerRunden(line) {
+    const s = String(line || "");
+    const m = s.match(/^TEIL\s+[A-Z]\s*[–-]\s*(\d+)\s+Rounds?\b/i);
+    if (m) return Number(m[1]);
+    /* "TEIL B – For Time" (Spiegel-Leiter, 03.10.2026): ein Durchgang. Ohne
+       das zaehlte Teil B mit der Rundenzahl von Teil A weiter. */
+    return /^TEIL\s+[A-Z]\s*[–-]\s*For\s+Time\b/i.test(s) ? 1 : 0;
+  }
+
+  /* "5-4-3-2-1 Pull-Ups" sind 15 Wiederholungen, nicht 5. */
+  function leiterSumme(line) {
+    const m = String(line || "").match(/^(?:[•*-]\s*)?(\d+(?:\s*-\s*\d+)+)\s+\D/);
+    return m ? m[1].split("-").reduce((a, x) => a + Number(x.trim()), 0) : 0;
+  }
+
   function getRoundMultiplier(text) {
     const raw = String(text || "");
 
-    let match = raw.match(/(\d+)\s+Rounds?\s+For\s+Time/i);
+    let match = raw.match(/(\d+)\s+(?:Rounds?\s+For\s+Time|Runden\s+auf\s+Zeit)/i);
     if (match) return Number(match[1]);
 
-    match = raw.match(/(\d+)\s+Rounds?/i);
+    match = raw.match(/(\d+)\s+(?:Rounds?|Runden)\b/i);
     if (match) return Number(match[1]);
 
     return 1;
@@ -699,7 +826,19 @@
       if (/^for time$/i.test(line)) return;
       if (/^-{4,}$/.test(line)) return;
 
-      const parsed = parseWorkoutLineCalories(`${totalReps} ${line}`, profile);
+      /* Eigene Meter-Leiter neben dem Schema ("400-300-200 m Run", 30.10.2026). */
+      const meterM = line.match(/^(\d+(?:-\d+)+)\s*m\s+(.+)$/);
+      if (meterM) {
+        const meter = meterM[1].split("-").map(Number).reduce((a, b) => a + b, 0);
+        const lauf = parseWorkoutLineCalories(`${meter} m ${meterM[2].trim()}`, profile);
+        if (lauf && lauf.entryType !== "rest") entries.push({ source: lauf.movementName || lauf.raw, calories: lauf.calories, line, detail: line, entryType: lauf.entryType });
+        return;
+      }
+      /* "Double Unders ×3" (Seil in der Leiter, 04.10.2026): dreimal so viele. */
+      const faktorM = line.match(/\s*[×x]\s*(\d+)\s*$/i);
+      const faktor = faktorM ? Number(faktorM[1]) || 1 : 1;
+      const name = faktorM ? line.slice(0, faktorM.index).trim() : line;
+      const parsed = parseWorkoutLineCalories(`${totalReps * faktor} ${name}`, profile);
       if (!parsed || parsed.entryType === "rest") return;
 
       entries.push({
@@ -774,7 +913,14 @@
         return;
       }
 
-      const match = line.match(/(\d+(?:[.,]\d+)?)\s*(cal|cals|calories)\s*(bike|row|ski)?/i);
+      /* Zweiteiler: jeder Teil bringt seine eigene Rundenzahl mit. */
+      const teilRunden = zweiteilerRunden(line);
+      if (teilRunden) {
+        roundMultiplier = teilRunden;
+        return;
+      }
+
+      const match = line.match(/(\d+(?:[.,]\d+)?)\s*(cal|cals|calorie|calories)\s*(bike|row|ski)?/i);
       if (!match) return;
 
       const type = line.toLowerCase();
@@ -810,6 +956,13 @@
 
       if (upper.startsWith("CASH-OUT")) {
         currentSection = "CASH-OUT";
+        return;
+      }
+
+      /* Zweiteiler: jeder Teil bringt seine eigene Rundenzahl mit. */
+      const teilRunden = zweiteilerRunden(line);
+      if (teilRunden) {
+        roundMultiplier = teilRunden;
         return;
       }
 
@@ -945,7 +1098,11 @@
 
       if (movement.type !== "reps" && movement.type !== "shuttle") return;
 
+      /* Zweiteiler: Rundenzahl je Teil, fuer jede Uebung neu ab Anfang. */
+      let teilMult = roundMultiplier;
       lines.forEach(line => {
+        const teilRunden = zweiteilerRunden(line);
+        if (teilRunden) { teilMult = teilRunden; return; }
         if (/cal\s+/i.test(line)) return;
         if (/\bm\b/.test(line) && !/wall walk/i.test(line)) return;
         if (/^AMRAP\b/i.test(line)) return;
@@ -966,9 +1123,9 @@
         let kcal = 0;
 
         if (movement.type === "reps") {
-          kcal = reps * movement.kcalPerRep * roundMultiplier * bodyFactor;
+          kcal = reps * movement.kcalPerRep * teilMult * bodyFactor;
         } else if (movement.type === "shuttle") {
-          kcal = reps * movement.kcalPerRep * roundMultiplier * bodyFactor;
+          kcal = reps * movement.kcalPerRep * teilMult * bodyFactor;
         }
 
         entries.push({
@@ -1743,7 +1900,11 @@ function getEmomMinuteBlocksFromText(text, profile) {
 
   matches.forEach(match => {
     const minuteNumber = Number(match[1]);
-    const content = String(match[2] || "").trim();
+    /* Der letzte Minutenblock endet an der Leerzeile: in einer
+       Gymnastics-Einheit folgt danach "E) Finisher …", und mit diesem Rest
+       erkannte der Rechner die Zeile nicht mehr — die Minute zaehlte 0 kcal
+       (volle Suite 05.10.2026, Goat-EMOM). */
+    const content = String(match[2] || "").split(/\n[ \t]*\n/)[0].trim();
 
     if (!content) return;
 
@@ -1789,6 +1950,28 @@ function getEmomMinuteBlocksFromText(text, profile) {
     return 0;
   }
 
+  /* Stationsliste ohne Dosis + geloggte Summe der Wiederholungen
+     (30.10.2026, siehe Aufruf in estimateFromLogRoh). Nur wenn KEINE der
+     Stationszeilen eine Zahl traegt — sonst rechnet der normale Weg. */
+  function schaetzeSummeUeberStationen(text, summe, profile) {
+    const zeilen = String(text || "").split("\n")
+      /* "• 1. Wall Ball Shots": so steht es auf der Box-Karte (kartenZeilen
+         setzt den Punkt vor die Stationsnummer), "1. ..." in der Rohfassung. */
+      .map((z) => (z.match(/^\s*(?:•\s*\d+\s*[.)]|\d+\s*[.)]|•)\s*(.+?)\s*$/) || [])[1])
+      .filter(Boolean);
+    if (zeilen.some((n) => /^\d/.test(n))) return null;
+    const arbeit = zeilen.filter((n) => !/^(rest|pause)\b/i.test(n));
+    const kcal = arbeit
+      .map((n) => { const p = parseWorkoutLineCalories("1 " + n, profile); return p && p.unitLabel === "reps" && p.calories > 0 ? p.calories : 0; })
+      .filter((k) => k > 0);
+    if (kcal.length < 2) return null;
+    const kehr = kcal.reduce((a, k) => a + 1 / k, 0);
+    const takt = String(text).match(/(\d+)\s*(?:seconds|secs?|s)\s*on\s*\/\s*(\d+)\s*(?:seconds|secs?|s)\s*off/i);
+    const runden = Number((String(text).match(/(\d+)\s*rounds?\b/i) || [])[1]) || 1;
+    const dauer = takt ? Math.round((runden * zeilen.length * (Number(takt[1]) + Number(takt[2]))) / 60 * 10) / 10 : null;
+    return { calories: (kcal.length * summe) / kehr, durationMinutes: dauer };
+  }
+
   function estimateEmomCaloriesFromResult(log, profile) {
     const text = getWorkoutText(log, profile?.gender);
     const blocks = getEmomMinuteBlocksFromText(text, profile);
@@ -1813,6 +1996,28 @@ function getEmomMinuteBlocksFromText(text, profile) {
         durationMinutes: totalMinutes || null,
         method: "emom_completed"
       };
+    }
+
+    /* ===== Summe statt "geschafft" (Rotations-EMOM, 05.10.2026) =====
+       "Min 1: 1 min so viele X wie möglich": gewertet ist die Summe aller
+       Wiederholungen. Annahme: jede Arbeitsminute kostet gleich viel Energie,
+       die schnelle Uebung bringt also mehr Wiederholungen als die langsame.
+       Dann ist kcal = Arbeitsminuten je Runde x Summe / Σ(1 / kcal je Wdh). */
+    const summe = Number(result.score || 0);
+    if (result.completed !== true && summe > 0) {
+      const arbeit = blocks
+        .map((b) => (String(b.raw || "").match(/so viele (.+?) wie möglich/i) || [])[1])
+        .filter(Boolean)
+        .map((name) => { const p = parseWorkoutLineCalories(`1 ${name}`, profile); return p && p.calories > 0 ? p.calories : 0; })
+        .filter((k) => k > 0);
+      if (arbeit.length) {
+        const kehr = arbeit.reduce((a, k) => a + 1 / k, 0);
+        return {
+          calories: Math.round((arbeit.length * summe / kehr) * 10) / 10,
+          durationMinutes: totalMinutes || null,
+          method: "emom_summe"
+        };
+      }
     }
 
     // ===== Nicht vollständig geschafft =====
@@ -2045,16 +2250,65 @@ function bereinigeWhiteboardZeile(z, gender) {
   s = s.replace(/\s*[—–-]\s*(right|left|rechts|links)\s*$/i, "");
   // "1.round: 15 WBS" (Hyrox) -> die Rundenmarke ist keine Uebung
   s = s.replace(/^\d+\s*\.\s*round\s*:\s*/i, "");
+  /* Admin-Pruefung 10.10.2026 (CrossFit Munich 14.10.): "Minute 1: 50 Double
+     Unders", "Min. 2 | 3-5 candlesticks" — die Minutenmarke ist keine Uebung.
+     "AMRAP Air Squats" in der Minute heisst: so viele wie moeglich -> Max. */
+  s = s.replace(/^min(?:ute)?\.?\s*\d+\s*[:|]\s*/i, "");
+  /* Admin-Pruefung 21.10.2026 (CrossFit Munich 25.10.-31.10.): Stationslisten
+     "1. Wall Ball Shots@9/6kg" — die Nummer ist keine Dosis; "In Remaining
+     Time: Max Cal Row" — die Einleitung ist keine Uebung; "400m* run away"
+     — der Stern verweist auf die Fussnote; "@9/6kg" ohne Leerzeichen
+     klebte am Namen ("Wall Ball Shots@"). */
+  s = s.replace(/^\d{1,2}[.)]\s+(?=[A-Za-z0-9])/, "");
+  /* CFM 02.11.2026: "in remaining time, max plank hold*" — mit Komma statt Doppelpunkt. */
+  s = s.replace(/^in\s+(?:the\s+)?remain(?:ing|der)\s+(?:of\s+the\s+)?time\s*[:,]?\s*/i, "");
+  s = s.replace(/\*+(?=\s|$)/g, "");
+  s = s.replace(/\s*@\s*(?=\d+(?:[.,]\d+)?(?:\s*\/\s*\d+(?:[.,]\d+)?)?\s*(?:kg|cm)\b)/i, " ");
+  s = s.replace(/^AMRAP\s+(?=[A-Za-z])(?!min\b|rounds?\b)/i, "Max ");
+  /* CFM Hyrox 30.10.2026: "25 Double Kettlebell Snatches (2x 24/16KG)" — zwei
+     Kettlebells, Last je Glocke als Paar Mann/Frau in Klammern. Ohne diese
+     Regel machte die Paar-Regel darunter "(2x, 24 kg)" daraus, und der
+     Rechner fand nur "Snatches (" mit dem Rueckfallwert. Die Last je Glocke
+     reicht; "Double" im Namen sagt, dass es zwei sind. */
+  /* CFM Hyrox 05.11.2026: "40 DB Thrusters (2 × 17,5/12,5 kg)" — mit dem
+     Malzeichen und Leerzeichen, auch ohne Frauenlast "(2 × 17,5 kg)". Das
+     wurde "(2 ×, 17,5 kg)", und nur Devil Press fand den Namen trotzdem. */
+  s = s.replace(/\s*\(\s*2\s*[x×]\s*(\d+(?:[.,]\d+)?)\s*(?:\/\s*(\d+(?:[.,]\d+)?)\s*)?kgs?\s*\)/gi, (_, m, w) => ", " + (frau && w ? w : m) + " kg");
+  /* "15 Overhead squats 42,5kg/30kg" (Nancy 16.10.): Paar mit kg an BEIDEN
+     Zahlen und ohne Komma davor. */
+  s = s.replace(/,?\s*(\d+(?:[.,]\d+)?)\s*kgs?\s*\/\s*(\d+(?:[.,]\d+)?)\s*kgs?\b/gi, (_, m, w) => ", " + (frau ? w : m) + " kg");
+  /* Burgener-Warm-up (16.10.): Snatch-Teilbewegungen auf ihre Hebung. */
+  s = s.replace(/\b(?:high\s+)?hang\s+muscle\s+snatch(?:es)?\b/i, "Muscle Snatch");
+  s = s.replace(/\bsnatch(?:es)?\s+lands?\s+in\s+power\s+position\b/i, "Power Snatch");
+  s = s.replace(/\b(?:snatch\s+drops?|drop\s+snatch(?:es)?)\b/i, "Snatch Balance");
+  /* Nur die Langhantel: "Dumbbell Hang Snatch" hat einen eigenen Eintrag. */
+  if (!/\b(?:dumbbell|db|kettlebell|kb|single[\s-]arm)\b/i.test(s)) s = s.replace(/\b(?:high\s+)?hang\s+snatch(?:es)?\b/i, "Hang Power Snatch");
+  /* "Monster Band Lateral Walks" landete bei "Lunges" (10.10.2026). */
+  s = s.replace(/\b(?:monster\s+band(?:ed)?\s+lateral\s+walks?|lateral\s+band(?:ed)?\s+walks?|monster\s+walks?|band(?:ed)?\s+side\s+steps?)\b/i, "Banded Lateral Walks");
   // "600 Meter Run", "100–Meter Farmer's Carry" -> "600 m Run"
   s = s.replace(/(\d+(?:[.,]\d+)?)\s*[—–-]?\s*meters?\b/gi, "$1 m");
   // "250-m row" / "25m/side": die Box bindet das m mit Strich an die Zahl
   s = s.replace(/(\d+(?:[.,]\d+)?)\s*[—–-]\s*m\b/gi, "$1 m");
   // "45sec." / "45secs" / "45 seconds" -> "45 sec" (ohne Leerzeichen und mit
   // Punkt erkennt der Zeilenparser die Dauer sonst nicht)
-  s = s.replace(/(\d+)\s*sec(?:s|onds?)?\.?(?=\s|$)/gi, "$1 sec");
+  // "30–Sec Wall Sit" (CrossFit Munich 08.10.): auch mit Strich zwischen Zahl und sec
+  s = s.replace(/(\d+)\s*[—–-]?\s*sec(?:s|onds?)?\.?(?=\s|$)/gi, "$1 sec");
+  // Haltezeilen der Box (08.10.2026): "Front Plank" ist die Planke, "hang
+  // from Pull up Bar" der Dead Hang. "DL" ist das Kreuzheben, "Devli
+  // Press" ein Tippfehler, "any mavchine" auch.
+  /* "plank hold" (CFM 19.10. + 02.11.2026) bisher nur per katalog_nachtraege;
+     mit dem Release eingebaut, damit es auch ohne Nachtrag ankommt. */
+  s = s.replace(/\b(?:front\s+)?plank\s+hold\b/i, "Plank");
+  s = s.replace(/\bfront\s+plank\b/i, "Plank");
+  s = s.replace(/\b(?:dead\s+)?hang\s+(?:from|on|at)\s+(?:the\s+)?(?:pull[\s-]?up\s+)?bar\b/i, "Dead Hang");
+  s = s.replace(/\bDL\b/g, "Deadlifts");
+  s = s.replace(/\bdevli\s+press(?:es)?\b/i, "Devil’s Press");
+  s = s.replace(/\bany\s+ma[a-z]*ch[a-z]*ine\b/i, "any machine");
   // ", 32 / 22.5 kgs" -> die eigene Last; "kgs" -> "kg"
   s = s.replace(/,?\s*(\d+(?:[.,]\d+)?)\s*\/\s*(\d+(?:[.,]\d+)?)\s*kgs?\b/gi, (_, m, w) => ", " + (frau ? w : m) + " kg");
   s = s.replace(/\bkgs\b/gi, "kg");
+  // "Thrusters (42,5/30kg)" (Fran 09.10.2026): nach dem Paar bleibt "( , 42,5 kg)" uebrig
+  s = s.replace(/\(\s*,\s*(\d+(?:[.,]\d+)?)\s*kg\s*\)/i, ", $1 kg");
   // Lasten ohne Einheit am Ende ("@9/6", "@2x16/12", "(2x11,5)") sagen dem Rechner nichts
   s = s.replace(/\s*@\s*\d+\s*x\s*\d+(?:[.,]\d+)?(?:\s*\/\s*\d+(?:[.,]\d+)?)?\s*$/i, "");
   s = s.replace(/\s*@\s*\d+(?:[.,]\d+)?(?:\s*\/\s*\d+(?:[.,]\d+)?)?\s*$/i, "");
@@ -2065,6 +2319,7 @@ function bereinigeWhiteboardZeile(z, gender) {
   // Zahlenpaar vorn: der Wert des eigenen Geschlechts (Maenner zuerst, wie
   // die Box schreibt)
   s = s.replace(/^(\d+(?:[.,]\d+)?)\s*\/\s*(\d+(?:[.,]\d+)?)(?=\s|[—–-]?\s*(?:cal|m\b))/i, (_, m, w) => (frau ? w : m));
+  s = s.replace(/\bany\s+machine\s*\(.*?\)/i, "any machine");
   // Kalorien auf "irgendeiner Maschine": eine Kalorie ist eine Kalorie
   // kein \b vor "cal": die Box schreibt "30/21cal." ohne Leerzeichen
   s = s.replace(
@@ -2107,6 +2362,7 @@ const WHITEBOARD_UMSCHREIBUNGEN = [
   [/\breverse\s+lunges?\b/i, "Lunges"],
   [/\bcurtsy\s+lunges?\b/i, "Lunges"],
   [/\bhamstring\s+curls?\b/i, "Nordic Hamstring Curls"],
+  [/\b(?:single[\s-]+leg\s+)?(?:ipsilateral\s+)?(?:standing\s+)?calf\s+raises?\b/i, "Standing Calf Raises"],
   [/\bbicep\s+curls?\b|\bdb\s+curls?\b|\bcurls\b/i, "Dumbbell Bicep Curls"],
   [/\breverse\s+fl(?:y|ies|ys|yes)\b|rear\s+delt\s+fl(?:y|ies|ys)\b/i, "Reverse Flyes"],
   [/\bfl(?:y|ies|ys|yes)\b/i, "Dumbbell Flyes"],
@@ -2127,6 +2383,18 @@ const WHITEBOARD_UMSCHREIBUNGEN = [
   [/\bhandstand\s+push[- ]?ups?\b/i, "Handstand Push-Ups"],
   [/\bpush[- ]?ups?\s+on\s+db\b/i, "Push Ups"],
   [/\btuck\s+crunch(?:es)?\b|\bcrunch(?:es)?\b/i, "Sit Ups"],
+  /* CrossFit Munich 28.10./25.10.2026: Sit-Ups mit Ball sind beschwerte
+     Sit-Ups; "Skull Crusher" schreibt die Box mit Leerzeichen. */
+  [/\bmed(?:icine)?[\s-]?ball\s+sit[\s\-–—]?ups?\b/i, "Weighted Sit-Ups"],
+  [/\bskull\s*crushers?\b/i, "Skullcrushers"],
+  /* Hyrox-Track 23.10.2026: "14 alt Hang DB snatches" — das Geraet steht
+     zwischen Hang und Snatch, der Geraete-Abzug machte daraus "Hang snatches". */
+  [/\bhang\s+(?:db|dumbbell)\s+snatch(?:es)?\b|\b(?:db|dumbbell)\s+hang\s+snatch(?:es)?\b/i, "Dumbbell Hang Snatches"],
+  /* Hyrox-Track 30.10.2026: "25 Double Kettlebell Hang Snatches (2x 24/16KG)".
+     Einen eigenen Hang-Eintrag gibt es fuer die Kettlebell nicht; die
+     Bewegung ist fuer den Verbrauch der Snatch. Doppelt vor einzeln. */
+  [/\bdouble\s+(?:kettlebell|kb)\s+hang\s+snatch(?:es)?\b|\bhang\s+double\s+(?:kettlebell|kb)\s+snatch(?:es)?\b/i, "Double Kettlebell Snatches"],
+  [/\b(?:single\s+)?(?:kettlebell|kb)\s+hang\s+snatch(?:es)?\b|\bhang\s+(?:kettlebell|kb)\s+snatch(?:es)?\b/i, "Single Kettlebell Snatches"],
   [/\brussian\s+twists?\b/i, "Russian Twists"],
   [/\bground\s+to\s+overhead\b/i, "Ground to Overhead"],
   [/\b(?:rdl|romanian\s+deadlifts?)\b/i, "Romanian Deadlift"],
@@ -2151,12 +2419,54 @@ const WHITEBOARD_UMSCHREIBUNGEN = [
   [/\bhspus?\b/i, "Handstand Push-Ups"],
   [/\bjumping\s+pull[\s-]?ups?\b/i, "Pull Ups"],                  // Skalierung, dieselbe Bewegung
   [/\bdu'?s\b|\bdus\b/i, "Double Unders"],
+  /* CFM Hyrox 31.10.2026: "75 Doubelunders" — Tippfehler, zusammengeschrieben.
+     NUR die Fehlschreibungen: traf die Regel auch "Double Unders", schluckte
+     die Umschreibung den Leiterfaktor ("Double Unders ×3", WebKit-Suite). */
+  [/\bdoubel\s*-?\s*unders?\b|\bdoubleunders?\b/i, "Double Unders"],
   [/\bmed(?:icine)?[\s-]?ball\s+cleans?\b/i, "Medicine-Ball Cleans"],
   [/\bball\s+slams?\b|\bslam\s+balls?\b/i, "Med Ball Slams"],
   [/\bs2oh\b|\bshoulder\s+to\s+overhead\b/i, "Shoulder to Overhead"],
   [/\bsdhp\b|\bsumo\s+deadlift\s+high\s+pulls?\b/i, "Sumo Deadlift High Pull"],
   [/\bg2oh\b/i, "Ground to Overhead"],
 ];
+/* Nachtrag aus der Tabelle katalog_nachtraege (27.10.2026, js/katalog-nachtraege.js):
+   eine "schreibweise" ist ein regulaerer Ausdruck (ohne Schraegstriche, immer
+   ohne Gross/Klein) auf einen Katalognamen, den der Rechner schon kennt; eine
+   "uebung" ein neuer Eintrag in MOVEMENT_DATA samt Aliassen. Liefert true, wenn
+   der Nachtrag greift. Warum: jede neue Whiteboard-Schreibweise ("Farmers Hold
+   Lunges") brauchte bisher ein Store-Release, bis dahin verstand die App den
+   Box-Eintrag nicht. Neue Nachtraege stehen VORN, damit sie vor den eingebauten
+   Umschreibungen greifen. */
+/* Schreibweisen aus Nachtraegen ersetzen den Text der Zeile, BEVOR der Rechner
+   sie zerlegt: Umschreibungen allein greifen nur bei Wiederholungszeilen, nicht
+   bei "500m Ski" oder "40 sec Front Plank Hold" (Strecke und Zeit gehen eigene
+   Wege, gemessen 27.10.2026). Mit "$1" bleibt eine Zahl erhalten
+   ("^(\d{3,4})\s+row\b" -> "$1 m Row"). */
+const NACHTRAG_ERSETZUNGEN = [];
+function nachtragen(z) {
+  if (!z || !z.muster) return false;
+  if (z.art === "schreibweise") {
+    if (!z.ziel) return false;
+    let re;
+    try { re = new RegExp(z.muster, "i"); } catch (e) { return false; }
+    NACHTRAG_ERSETZUNGEN.push([re, z.ziel]);
+    if (getMovementData(z.ziel)) WHITEBOARD_UMSCHREIBUNGEN.unshift([re, z.ziel]);
+    return true;
+  }
+  if (z.art === "uebung") {
+    const d = (z.daten && typeof z.daten === "object") ? z.daten : {};
+    const key = normalizeMovementName(z.muster);
+    if (!key) return false;
+    const eintrag = d.type === "time" ? { kcalPerMinute: Number(d.kcalPerMinute) || 3, type: "time" }
+      : d.type === "distance" ? { kcalPerMeter: Number(d.kcalPerMeter) || 0.3, type: "distance" }
+      : { kcalPerRep: Number(d.kcalPerRep) || 0.5, type: "reps" };
+    MOVEMENT_DATA[key] = eintrag;
+    (Array.isArray(d.aliases) ? d.aliases : []).forEach(a => { const k = normalizeMovementName(a); if (k && !MOVEMENT_DATA[k]) MOVEMENT_DATA[k] = eintrag; });
+    return true;
+  }
+  return false;
+}
+
 function lockereNamen(name) {
   const aus = [];
   const merk = (k) => { const t = String(k || "").replace(/\s+/g, " ").trim(); if (t && !aus.includes(t)) aus.push(t); };
@@ -2177,6 +2487,17 @@ function lockereNamen(name) {
 }
 
 function parseWorkoutLineCalories(line, profile) {
+  if (NACHTRAG_ERSETZUNGEN.length) { let l = String(line || ""); for (const [re, ziel] of NACHTRAG_ERSETZUNGEN) l = l.replace(re, ziel); line = l; }
+  /* Partner-WOD, Synchro-Zeile (05.10.2026): "15 Burpees (synchron)" machen
+     BEIDE ganz. Die Karte zaehlt sonst fuer zwei, und der Partner-Anteil
+     kuerzt am Ende auf den eigenen Teil — die Synchro-Zeile zaehlt deshalb
+     doppelt, dann bleibt nach dem Kuerzen die volle Zahl. Die Hinweise
+     "(Staffel, ...)" und "(Partner hält ...)" schneidet der Leser selbst ab. */
+  const synchro = String(line || "").match(/^(.*?)\s*\(synchron\)\s*$/i);
+  if (synchro) {
+    const p = parseWorkoutLineCalories(synchro[1], profile);
+    return p ? Object.assign({}, p, { units: p.units * 2, calories: p.calories * 2, synchron: true }) : null;
+  }
   const raw = String(line || "").replace(/\u00a0/g, " ");
   const clean = bereinigeWhiteboardZeile(
     raw
@@ -2275,12 +2596,18 @@ function parseWorkoutLineCalories(line, profile) {
     if (innen && innen.entryType !== "rest") {
       return { ...innen, raw: clean };
     }
+    /* Max-Halten ("max plank hold", CFM 02.11.2026): ohne gemeldete Zeit eine
+       Minute — "20 Plank" ist keine Dosis, eine Haltezeile braucht Sekunden. */
+    const halten = parseWorkoutLineCalories(`60 sec ${maxRep[1]}`, profile);
+    if (halten && halten.entryType !== "rest" && halten.unitType === "duration") {
+      return { ...halten, raw: clean };
+    }
   }
 
   // ===== Calories first =====
   let match =
-    clean.match(/^(\d+(?:[.,]\d+)?)\s*(bike|row|ski(?:\s*erg)?)\s*(cal|cals|calories)\b/i) ||
-    clean.match(/^(\d+(?:[.,]\d+)?)\s*(cal|cals|calories)\s*(bike|row|ski(?:\s*erg)?)\b/i);
+    clean.match(/^(\d+(?:[.,]\d+)?)\s*(bike|row|ski(?:\s*erg)?)\s*(cal|cals|calorie|calories)\b/i) ||
+    clean.match(/^(\d+(?:[.,]\d+)?)\s*(cal|cals|calorie|calories)\s*(bike|row|ski(?:\s*erg)?)\b/i);
 
   if (match) {
     const calories = parseNumber(match[1]) || 0;
@@ -2574,6 +2901,12 @@ function parseWorkoutLineCalories(line, profile) {
     }
   }
 
+  /* Leiter "5-4-3-2-1 Pull-Ups" = 15 Wiederholungen (Spiegel-Leiter im
+     Zweiteiler, 03.10.2026; vorher fiel die Zeile ganz heraus und die
+     Schaetzung sprang auf die reine Dauer). */
+  const leiter = leiterSumme(clean);
+  if (leiter) return parseWorkoutLineCalories(clean.replace(/^\d+(?:\s*-\s*\d+)+/, String(leiter)), profile);
+
   // ===== Generic reps =====
   match = clean.match(/^(\d+(?:[.,]\d+)?)\s+(.+)$/);
   if (!match) return null;
@@ -2688,6 +3021,13 @@ function extractWorkoutEntries(text, roundMultiplier, profile) {
       return;
     }
 
+    /* Zweiteiler: jeder Teil bringt seine eigene Rundenzahl mit. */
+    const teilRunden = zweiteilerRunden(line);
+    if (teilRunden) {
+      roundMultiplier = teilRunden;
+      return;
+    }
+
     const parsed = parseWorkoutLineCalories(line, profile);
     if (!parsed || parsed.entryType === "rest") return;
 
@@ -2745,6 +3085,9 @@ function buildAmrapPartialSummary(segments) {
       const movementLabel = String(segment.raw || "")
         .replace(/^(\d+(?:[.,]\d+)?)\s+/, "")
         .replace(/,\s*\d+(?:[.,]\d+)?\s*kg\b.*$/i, "")
+        /* Leere Klammern nach der Geschlechter-Auswahl ("Box Jumps (60 / 50 cm)"
+           -> "Box Jumps ()", Log-Pruefung 05.10.2026) und Hinweise raus. */
+        .replace(/\s*\(\s*\)/g, "")
         .trim();
 
       const value = Number(segment.doneUnits || 0);
@@ -2855,6 +3198,37 @@ function buildAmrapPartialSummary(segments) {
     const result = log?.result || {};
     const rounds = Number(result.rounds || 0);
     const reps = Number(result.reps || 0);
+
+    /* AMRAP-Teile (Zweiteiler / AMRAP-Wechsel, 04.10.2026): jeder Teil mit
+       SEINEN Runden. Sonst zaehlten die Runden beider Teile fuer alle Zeilen
+       — die Kalorien lagen beim Doppelten. */
+    const teileLog = Array.isArray(result.teile)
+      ? result.teile.filter((t) => /^Teil\s+[A-Z]/i.test(String(t && t.name || ""))) : [];
+    if (teileLog.length && /^TEIL\s+[A-Z]\s*[–-]\s*AMRAP/im.test(text)) {
+      const stuecke = {};
+      let akt = null;
+      text.split("\n").forEach((roh) => {
+        const line = roh.trim();
+        const m = line.match(/^TEIL\s+([A-Z])\s*[–-]\s*(.*)$/i);
+        if (m) { akt = m[1].toUpperCase(); stuecke[akt] = [m[2]]; return; }
+        if (!akt || /^Pause\s+\d+\s*min$/i.test(line) || /^\d+\s+Durchgänge\b/i.test(line)) return;
+        stuecke[akt].push(line);
+      });
+      let summe = 0;
+      teileLog.forEach((t) => {
+        const b = String(t.name).match(/^Teil\s+([A-Z])/i)[1].toUpperCase();
+        const st = getAmrapStructureFromText((stuecke[b] || []).join("\n"), profile);
+        const bloecke = st.mainBlocks || [];
+        const jeRunde = bloecke.reduce((sum, block) => sum + Number(block.calories || 0), 0);
+        summe += jeRunde * (Number(t.rounds) || 0) + buildAmrapPartialFromBlocks(bloecke, Number(t.reps) || 0).partialCalories;
+      });
+      return {
+        calories: Math.round(summe * 10) / 10,
+        durationMinutes: getDurationMinutesFromLog(log),
+        method: "amrap_teile",
+        partialSummary: ""
+      };
+    }
 
     const mainCaloriesPerRound = mainBlocks.reduce((sum, block) => {
       return sum + Number(block.calories || 0);
@@ -2974,13 +3348,14 @@ function buildAmrapPartialSummary(segments) {
               || line.match(/^(?:·\s*)?(\d+)\s+Rounds?:$/i);
             if (abschnitt) { abschnittMult = Number(abschnitt[1]) || 1; return; }
             if (/^(?:·\s*)?(?:Dann|Then)[,:]?\s*$/i.test(line)) { abschnittMult = 1; return; }
-            const kopfRunden = line.match(/^(\d+)\s+Rounds?\s+For\s+Time\b/i);
+            const kopfRunden = line.match(/^(\d+)\s+(?:Rounds?\s+For\s+Time|Runden\s+auf\s+Zeit)\b/i);
             if (kopfRunden) { abschnittMult = Number(kopfRunden[1]) || 1; }
           }
 
           if (
             /^For Time\b/i.test(line) ||
             /^\d+\s+Rounds?\s+For\s+Time\b/i.test(line) ||
+            /^\d+\s+Runden\s+auf\s+Zeit\b/i.test(line) || /^Auf Zeit\b/i.test(line) ||
             /^For Time\s*\(Chipper/i.test(line)
           ) {
             currentSection = "main";
@@ -3127,6 +3502,49 @@ function buildAmrapPartialSummary(segments) {
 
         let total = buyInCalories;
         let partialSummary = "";
+
+        /* Punktwert bei For Time mit Cap (A54-Pruefung 22.10.2026, 0 kcal):
+           Box-WODs wie "Individual (East)" loggen EINE Zahl, z. B. "Meter in
+           Part C" — die feste Arbeit (Part A, B) ist erledigt, in der
+           Restzeit wird eine Max-Zeile gesammelt. Ohne diesen Zweig landete
+           der Punktwert bei "Runden + Reps" mit 0 Runden und ergab nichts.
+           Rechnung: alles Vorgeschriebene ganz, die Max-Zeile mit der
+           geloggten Zahl statt des Platzhalters (der Zeilenleser setzt fuer
+           "max" 20 Einheiten an). Dauer = Time Cap. Ohne Max-Zeile und mit
+           Reps als Einheit ist die Zahl der Fortschritt bis zum Cap. */
+        if (log.resultType === "score" && Number(result.score) > 0) {
+          const zahl = Number(result.score);
+          const einheit = { m: "m", kcal: "cal", cal: "cal", Reps: "reps", reps: "reps" }[String(result.unit || "").trim()] || "";
+          const capMatch = text.match(/(?:\bTC|Time\s*Cap|\bCap)\s*:?\s*(\d+)\s*min/i);
+          const capMin = capMatch ? Number(capMatch[1]) : null;
+          const maxZeile = text.split("\n").find((z) => /^[•\-*\s]*max\b/i.test(z));
+          const alt = maxZeile ? parseWorkoutLineCalories(maxZeile, profile) : null;
+
+          if (!alt && einheit === "reps") {
+            const partial = buildFortimePartialFromBlocks(mainBlocks, zahl);
+            return {
+              calories: Math.round((total + partial.partialCalories) * 10) / 10,
+              durationMinutes: capMin,
+              method: "fortime_capped_score_units",
+              partialSummary: buildAmrapPartialSummary(partial.segments)
+            };
+          }
+
+          total += mainCycleCalories * prescribedRounds + cashOutCalories;
+          if (alt && einheit && alt.unitLabel === einheit) {
+            const rest = maxZeile.replace(/^[•\-*\s]*max(?:imum)?\s*[-–]?\s*(?:meters?|m\b|cal(?:orie)?s?\.?|reps?)?\s*/i, "");
+            const ersatz = parseWorkoutLineCalories(zahl + (einheit === "reps" ? " " : " " + einheit + " ") + rest, profile);
+            if (ersatz && ersatz.movementName === alt.movementName) {
+              total += Number(ersatz.calories || 0) - Number(alt.calories || 0);
+            }
+          }
+          return {
+            calories: Math.round(total * 10) / 10,
+            durationMinutes: capMin,
+            method: "fortime_capped_score",
+            partialSummary: ""
+          };
+        }
 
         if (isCompleted) {
           total += mainCycleCalories * prescribedRounds;
@@ -3316,8 +3734,75 @@ function buildAmrapPartialSummary(segments) {
       });
     }
 
+    /* STRAFARBEIT (Benjamin 05.10.2026): "For Time, jedes Absetzen: 10 cal
+       Bike" — wie oft abgesetzt wurde, steht im Log (result.strafen); jede
+       Strafe ist eine weitere Zeile Arbeit. Puls-Schaetzungen messen sie
+       ohnehin mit und bleiben unberuehrt. */
+    function mitStrafen(schaetzung, log) {
+      const n = Number(log && log.result && log.result.strafen);
+      if (!schaetzung || !(n > 0) || /^hr_/.test(String(schaetzung.method || ""))) return schaetzung;
+      const m = String(getWorkoutText(log) || "").match(/jedes Absetzen:\s*(.+?)\s*\(TC/i);
+      const p = m ? parseWorkoutLineCalories(m[1], getProfileData()) : null;
+      if (!p || !(p.calories > 0)) return schaetzung;
+      const extra = p.calories * n;
+      return Object.assign({}, schaetzung, {
+        calories: Math.round(Number(schaetzung.calories || 0) + extra),
+        breakdown: Object.assign({}, schaetzung.breakdown || {}, { strafCalories: Math.round(extra) }),
+        strafen: n
+      });
+    }
+
+    /* ZEITBODEN (Benjamin 14.11.2026). Die WOD-Wege rechnen je
+       Wiederholung, die Zeit spielt keine Rolle: 4 Runden Bauch-Zirkel
+       (120 Sit-Ups/V-Ups/GHD) in 10 Minuten kamen auf 32 kcal = 3,2 kcal/min —
+       weniger als leichtes Zirkeltraining. Untergrenze darum: 4 MET fuer den
+       75-kg-Referenzathleten (5 kcal/min, Compendium "circuit training,
+       light" ~4,3) mal bodyFactor mal Dauer. Liegt die Wiederholungsrechnung
+       hoeher, gilt sie. Nur die Text-Wege der WODs — Puls, Kraft-Struktur,
+       Strongman und Last-Schaetzungen haben ihr eigenes Zeitmodell. Steht
+       INNERHALB des Partner-Anteils: zu zweit wird auch der Boden geteilt
+       (die halbe Zeit ist Pause, waehrend der Partner arbeitet). */
+    const ZEITBODEN_KCAL_PRO_MIN = 5;
+    function mitZeitboden(schaetzung) {
+      if (!schaetzung) return schaetzung;
+      const m = String(schaetzung.method || "");
+      if (!/^(fortime_|amrap_|emom_|parsed_workout$|stationen_summe$)/.test(m)) return schaetzung;
+      const min = Number(schaetzung.durationMinutes);
+      if (!(min > 0)) return schaetzung;
+      const boden = Math.round(min * ZEITBODEN_KCAL_PRO_MIN * getBodyFactor(getProfileData()));
+      if (!(boden > Number(schaetzung.calories || 0))) return schaetzung;
+      return Object.assign({}, schaetzung, {
+        calories: boden,
+        breakdown: Object.assign({}, schaetzung.breakdown || {}, { zeitboden: true, ausWiederholungen: Number(schaetzung.calories || 0) })
+      });
+    }
+
     function estimateFromLog(log) {
-      return mitPartnerAnteil(estimateFromLogRoh(log), log);
+      bodyFactorBenutzt = false;
+      const e = mitPartnerAnteil(mitZeitboden(mitStrafen(estimateFromLogRoh(log), log)), log);
+      return mitErnaehrungsWert(e, bodyFactorBenutzt);
+    }
+
+    /* KCAL FUER DIE ERNAEHRUNG (Pruefrunde 3, Befund 8, 15.11.2026).
+       getBodyFactor skaliert mit Gewicht hoch 0,75, zieht Frauen 13 % und ab
+       30 Jahren 0,5 % je Jahr ab. Fuer XP und Historie bleibt das, wie es ist.
+       Fuer die Energiebilanz gilt bei Bewegung mit eigenem Gewicht lineare
+       Massenskalierung (Evidenz A fuer Gehen/Laufen); ein Frauen- oder
+       Altersabschlag auf die ARBEIT ist nicht belegt (er gilt fuer den
+       Ruheumsatz). Darum steht daneben `kcalErnaehrung` = kcal x (kg/75) /
+       bodyFactor — nur wenn der Weg den bodyFactor wirklich benutzt hat, nie
+       bei Puls oder MET. Bei gemischten Workouts (Erg + Wiederholungen) wird
+       das Ganze umgerechnet; das ist eine bewusste Vereinfachung. */
+    function mitErnaehrungsWert(e, benutzt) {
+      if (!e || !benutzt || !(e.calories > 0)) return e;
+      if (/^(hr_|met$)/.test(String(e.method || ""))) return e;
+      const p = getProfileData();
+      const vorher = bodyFactorBenutzt;
+      const bf = getBodyFactor(p);
+      bodyFactorBenutzt = vorher;
+      const f = p.weightKg > 0 && bf > 0 ? (p.weightKg / 75) / bf : 1;
+      if (!(f > 0) || Math.abs(f - 1) < 0.005) return e;
+      return Object.assign({}, e, { kcalErnaehrung: Math.round(e.calories * f), ernaehrungsFaktor: Math.round(f * 1000) / 1000 });
     }
 
     function estimateFromLogRoh(log) {
@@ -3342,6 +3827,34 @@ function buildAmrapPartialSummary(segments) {
             classicSchemeCalories: 0
           }
         };
+      }
+
+      /* Sport/Aktivitaet eintragen (js/aktivitaet.js, 14.11.2026): MET aus
+         dem Compendium 2024 mal Koerpergewicht mal Stunden — die Definition
+         des MET (1 MET = 1 kcal je kg und Stunde). Bewusst ohne bodyFactor:
+         der Compendium-Wert gilt schon je kg. Nach der HR-Pruefung: ein
+         gemessener Puls gewinnt. */
+      const akt = log.preset === "aktivitaet" ? log.aktivitaet : null;
+      if (akt && (Number(akt.met) > 0 || Number(akt.watt) > 0)) {
+        const min = Number(log.result && log.result.durationMinutes) || Number(akt.minuten) || 0;
+        /* Watt-Stufen (Ergometer, Rudern): die Leistung bestimmt den
+           Verbrauch, nicht das Koerpergewicht (Pruefrunde 3, Befund 5).
+           Formel in nutrition-calc.js (kcalAusLeistung). */
+        const leistung = Number(akt.watt) > 0 && window.NutritionCalc && typeof window.NutritionCalc.kcalAusLeistung === "function"
+          ? window.NutritionCalc.kcalAusLeistung(akt.formel, Number(akt.watt), profile.weightKg, min) : 0;
+        if (min > 0 && (leistung > 0 || Number(akt.met) > 0)) {
+          const kcal = leistung > 0 ? leistung : Math.round(Number(akt.met) * profile.weightKg * min / 60);
+          return {
+            calories: kcal,
+            durationMinutes: min,
+            weightKg: profile.weightKg,
+            heightCm: profile.heightCm || null,
+            gender: profile.gender,
+            method: "met",
+            met: Number(akt.met),
+            breakdown: { directCalories: kcal, distanceCalories: 0, repCalories: 0, classicSchemeCalories: 0 }
+          };
+        }
       }
 
       // Kraft-Session aus dem Plan-Reiter. Steht NACH der HR-Pruefung: liegt ein
@@ -3624,6 +4137,33 @@ function buildAmrapPartialSummary(segments) {
       const totalCalories =
         directCalories + distanceCalories + repCalories + classicSchemeCalories;
 
+      /* Summe ueber Stationen ohne Dosis (Box 30.10.2026, "CFM Benchmark
+         Workout": "45seconds on /15seconds off", "1. Wall Ball Shots@9/6kg"
+         ... "8. REST", geloggt "Wiederholungen gesamt"). Die Zeilen tragen
+         keine Wiederholungszahl, also fand der Text nichts und die Dauer-
+         Schaetzung kannte die Uhr nicht -> gar keine Kalorien. Wie beim
+         Rotations-EMOM (emom_summe): jede Station kostet gleich viel Energie,
+         kcal = Stationen x Summe / Σ(1 / kcal je Wdh). */
+      if (totalCalories <= 0 && log?.resultType === "score" && Number(log.result?.score) > 0) {
+        const st = schaetzeSummeUeberStationen(text, Number(log.result.score), profile);
+        /* Nur mit eigener Dauer aus dem Text ("45seconds on / 15seconds off").
+           Ohne sie (Tabata "8 x 0:20 / 0:10 je Uebung", Takt aus dem Timer)
+           fehlte dem Log die Dauer — der Tabata-Test sah durationMinutes null
+           statt 18.3 (23.10.2026). Dort rechnet weiter die Dauer-Schaetzung
+           unten, wie vor dem Fix vom 22.10. */
+        if (st && st.durationMinutes > 0) {
+          return {
+            calories: Math.round(st.calories),
+            durationMinutes: st.durationMinutes,
+            weightKg: profile.weightKg,
+            heightCm: profile.heightCm || null,
+            gender: profile.gender,
+            method: "stationen_summe",
+            breakdown: { directCalories: 0, distanceCalories: 0, repCalories: Math.round(st.calories), classicSchemeCalories: 0 }
+          };
+        }
+      }
+
       if (totalCalories <= 0) {
         const fallback = estimateFromDurationFallback(log, profile);
         if (!fallback) return null;
@@ -3680,6 +4220,7 @@ function buildAmrapPartialSummary(segments) {
        messen (tests/box-kalorien.test.mjs). */
     parseWorkoutLineCalories,
     bereinigeWhiteboardZeile,
-    lockereNamen
+    lockereNamen,
+    nachtragen
   };
 })();

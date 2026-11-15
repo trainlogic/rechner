@@ -95,8 +95,15 @@
     } else {
       const a = ALLE.find((e) => e.art === z.art);
       if (!a) return { fehlt: "Wähl eine Sportart aus der Liste." };
-      kcal = a.met * kg * min / 60;
-      quelle = `${a.name}, ${String(a.met).replace(".", ",")} MET`;
+      // Rudern mit Wattangabe rechnet aus der Leistung (wie in der App,
+      // Pruefrunde 3 Befund 5), alles andere MET x kg x Stunden.
+      if (a.watt) {
+        kcal = window.NutritionCalc.kcalAusLeistung(a.formel, a.watt, kg, min);
+        quelle = `${a.name}, aus der Leistung`;
+      } else {
+        kcal = a.met * kg * min / 60;
+        quelle = `${a.name}, ${String(a.met).replace(".", ",")} MET`;
+      }
     }
     const ruhe = RUHE_KCAL_JE_KG_H * kg * min / 60;
     const extra = Math.max(0, kcal - ruhe);
