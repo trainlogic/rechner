@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kreatin-Rechner: Tagesmenge und Ladephase | TrainLogic</title>
+<meta name="description" content="Kreatin-Rechner: Körpergewicht und Ernährung eintragen und sehen, wie viel Kreatin am Tag passt, mit oder ohne Ladephase.">
+<!-- Eingebettet im Blogartikel "Kreatin richtig einnehmen". noindex, damit
+     die nackte Rechnerseite nicht statt des Artikels rankt (wie Griffkraft). -->
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="../css/nutrition.css?v=edfd0b34">
+<link rel="stylesheet" href="../gemeinsam.css?v=3c61e44a">
+<script>
+  if (/[?&]eingebettet\b/.test(location.search)) document.documentElement.classList.add("eingebettet");
+</script>
+<style>
+  /* nutrition.css gibt jedem Knopf min-width:90px, im Raster zaehlt aber
+     die Spalte (vgl. Lauf- und Griffkraft-Rechner). */
+  .kr-wahl{display:grid}
+  .kr-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .kr-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .kr-wahl button{min-width:0;padding-left:4px;padding-right:4px;hyphens:manual;-webkit-hyphens:manual;line-height:1.2}
+  .kr-zeile{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:7px 0;border-bottom:1px solid #eef2f7;font-size:15px}
+  .kr-zeile span{min-width:0}
+  .kr-zeile b{white-space:nowrap;font-variant-numeric:tabular-nums}
+  .kr-text{margin:10px 0 0;font-size:15px;min-height:1.45em}
+  .kr-platz{visibility:hidden}
+</style>
+</head>
+<body>
+<main class="seite">
+  <h1>Kreatin-Rechner</h1>
+  <p class="unter">Körpergewicht und Ernährung eintragen und sehen, wie viel Kreatin am Tag passt.</p>
+
+  <div id="rechner" class="flaeche"></div>
+</main>
+<script src="kreatin.js?v=85d4fd9a"></script>
+</body>
+</html>
